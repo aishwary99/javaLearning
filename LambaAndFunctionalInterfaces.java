@@ -1,7 +1,8 @@
 import java.util.*;
 import java.util.stream.*;
+import java.util.function.*;
 
-public class Example1 {
+public class LambaAndFunctionalInterfaces {
 
     // Example 1 begins here
     public static void printOddNumbersInList(List<Integer> numbers) {
@@ -62,7 +63,7 @@ public class Example1 {
          * 
          * it is used to perform aggregation :)
          */
-            // .reduce(0, Example1::sum);
+            // .reduce(0, LambaAndFunctionalInterfaces::sum);
             // .reduce(0, (a, b) -> a + b);
             .reduce(0, Integer::sum);
 
@@ -158,6 +159,7 @@ public class Example1 {
         
         /**
         Predicate<Integer> isEvenPredicate = new Predicate<Integer>() {
+            // Function Descriptor
             @Override
             public boolean test(Integer number) {
                 return number % 2 == 0;
@@ -169,6 +171,7 @@ public class Example1 {
         
         /**
         Function<Integer, Integer> squareFunction = new Function<Integer, Integer>() {
+            // Function Descriptor
             @Override
             public Integer apply(Integer number) {
                 return number * number;
@@ -180,9 +183,22 @@ public class Example1 {
         
         /**
         Consumer<Integer> sysoutConsumer = new Consumer<Integer>() {
+            // Function Descriptor
             @Override
             public void accept(Integer number) {
                 System.out.println(number);
+            }
+        };
+        **/
+        
+        BinaryOperator<Integer> sumBinaryOperator = Integer::sum;
+        
+        /**
+        BinaryOperator<Integer> sumBinaryOperator = new BinaryOperator<Integer>() {
+            // Function Descriptor
+            @Override
+            public Integer apply(Integer a, Integer b) {
+                return a + b;
             }
         };
         **/
@@ -191,6 +207,64 @@ public class Example1 {
     }
     
     // Example 5 ends here
+    
+    // Example 6 starts here
+    
+    public static void filterAndPrint(List<Integer> numbers, Predicate<Integer> predicate) {
+        numbers.stream()
+            .filter(predicate)
+            .forEach(System.out::println);
+    }
+    
+    public static void exploringSupplier() {
+        // Supplier takes 0 arguments and returns something
+        Supplier<Integer> randomIntegerSupplierOne = () -> 2;
+        // System.out.println(randomIntegerSupplierOne.get());
+        
+        Supplier<Integer> randomIntegerSupplierTwo = () -> {
+            Random random = new Random();
+            return random.nextInt(10);
+        };
+        
+        System.out.println(randomIntegerSupplierTwo.get());
+    }
+    
+    public static void exploringUnaryOperator() {
+        // UnaryOperator takes one parameter as an argument and does some operation
+        // and returns the resulting value
+        UnaryOperator<Integer> unaryOperatorOne = (x) -> 3 * x;
+        System.out.println(unaryOperatorOne.apply(10));
+    }
+    
+    public static void exploringBiPredicate() {
+        // BiPredicate is used when you have two params in input
+        // and want to evalute based on condition -> true / false
+        BiPredicate<Integer, String> one = (number, str) -> {
+            return number < 10 && str.length() > 5;  
+        };
+        
+        System.out.println(one.test(5, "Aishwary Adwani"));
+    }
+    
+    public static void exploringBiFunction() {
+        // Extension to BiPredicate - we can also decide the return type
+        BiFunction<Integer, String, String> one = (number, str) -> {
+            return "Answer -> " + (number < 10 && str.length() > 5);  
+        };
+        
+        System.out.println(one.apply(5, "Aishwary Adwani"));
+    }
+    
+    public static void exploringBiConsumer() {
+        BiConsumer<String, String> one = (inputOne, inputTwo) -> {
+            System.out.println(inputOne);
+            System.out.println(inputTwo);
+        };
+        
+        one.accept("Aishwary", "Adwani");
+    }
+    
+    // Example 6 ends here
 
     
     public static void main(String args[]) {
@@ -205,5 +279,24 @@ public class Example1 {
         // addList(numbers);
         // listOperations(courses, numbers, false, false);
         // listToListOperations(numbers);
+        
+        /**
+        Predicate<Integer> evenPredicate = x -> x % 2 == 0;
+        Predicate<Integer> oddPredicate = x -> x % 2 != 0;
+        
+        filterAndPrint(numbers, evenPredicate);
+        filterAndPrint(numbers, oddPredicate);
+        **/
+        
+        // This is called -> Method/Behvaiour parameterization
+        // Externalizing the strategy (the algorithm to be performed) and passing it as an argument to the method
+        // filterAndPrint(numbers, x -> x % 3 != 0);
+        
+        // exploringSupplier();
+        // exploringUnaryOperator();
+        
+        // exploringBiPredicate();
+        // exploringBiFunction();
+        // exploringBiConsumer();
     }
 }
