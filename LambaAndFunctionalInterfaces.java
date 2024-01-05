@@ -265,6 +265,22 @@ public class LambaAndFunctionalInterfaces {
     }
     
     // Example 6 ends here
+    
+    // Example 7 starts here
+    
+    public static void printInput(String input) {
+        System.out.println(input);
+    }
+    
+    public static void exploringMethodReferences(List<String> courses) {
+        courses.stream()
+            .map(String::toUpperCase)
+            .forEach(LambaAndFunctionalInterfaces::printInput);
+            
+        Supplier<String> supplier = String::new;
+    }
+    
+    // Example 7 ends here
 
     
     public static void main(String args[]) {
@@ -298,5 +314,6 @@ public class LambaAndFunctionalInterfaces {
         // exploringBiPredicate();
         // exploringBiFunction();
         // exploringBiConsumer();
+        // exploringMethodReferences(courses);
     }
 }
