@@ -1,6 +1,62 @@
 import java.util.*;
 import java.util.stream.*;
+import java.util.function.*;
 import java.math.*;
+
+// Class representing a course with various attributes
+class Course {
+    private String name;
+    private String category;
+    private int reviewScore;
+    private int numberOfStudents;
+    
+    // Constructor to initialize the course object
+    public Course(String name, String category, int reviewScore, int numberOfStudents) {
+        this.name = name;
+        this.category = category;
+        this.reviewScore = reviewScore;
+        this.numberOfStudents = numberOfStudents;
+    }
+
+    // Getter and setter methods for accessing and modifying course attributes
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getCategory() {
+        return this.category;
+    }
+
+    public void setReviewScore(int reviewScore) {
+        this.reviewScore = reviewScore;
+    }
+
+    public int getReviewScore() {
+        return this.reviewScore;
+    }
+
+    public void setNumberOfStudents(int numberOfStudents) {
+        this.numberOfStudents = numberOfStudents;
+    }
+
+    public int getNumberOfStudents() {
+        return this.numberOfStudents;
+    }
+
+    // Override toString method for better object representation
+    @Override
+    public String toString() {
+        return this.name + ":" + this.numberOfStudents + ":" + this.reviewScore;
+    }
+}
 
 public class PlayingWithFunctionalProgramming {
     
@@ -95,6 +151,28 @@ public class PlayingWithFunctionalProgramming {
             .collect(Collectors.toList()));
     }
     
+    // Example 6 : Higher Order Functions : A function that returns a function :)
+    public static Predicate<Course> createPredicateWithCutOffReviewScore(int cutoffReviewScore) {
+        return course -> course.getReviewScore() > cutoffReviewScore;
+    }
+    
+    public static void exampleSix() {
+        Predicate<Course> reviewScoreGreaterThanCutoffReviewScore = 
+            createPredicateWithCutOffReviewScore(95);
+    }
+    
+    // Example 7 : FP and Performance | Intermediate stream operations are lazy
+    public static void exampleSeven(List<String> courses) {
+        // as soon as it finds the first element fulfilling the criteria, it would return that element
+        // peek helps in printing : what is going under the hood
+        courses.stream()
+            .peek(System.out::println)
+            .filter(course -> course.length() > 11)
+            .map(String::toUpperCase)
+            .peek(System.out::println)
+            .findFirst();
+    }
+    
     public static void main(String args[]) {
         List<Integer> numbers = List.of(12, 9, 13, 4, 6, 2, 4, 12, 15);
         int[] numbersArray = {12, 9, 13, 4, 6, 2, 4, 12, 15};
@@ -107,5 +185,7 @@ public class PlayingWithFunctionalProgramming {
         // exampleThree();
         // exampleFour();
         // exampleFive(courses);
+        // exampleSix()
+        exampleSeven(courses);
     }
 }
